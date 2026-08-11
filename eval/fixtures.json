@@ -1,0 +1,122 @@
+[
+  {
+    "id": "eval-1",
+    "subject": "Urgent: Project Security Vulnerability Detected",
+    "sender": "security@github.com",
+    "body": "Critical vulnerability detected in repository main branch. Please patch immediately.",
+    "expected_category": "GITHUB",
+    "expected_priority": "HIGH"
+  },
+  {
+    "id": "eval-2",
+    "subject": "Weekly Tech Digest - Issue #142",
+    "sender": "newsletter@techworld.com",
+    "body": "Here are the top stories of the week in AI and software engineering.",
+    "expected_category": "NEWSLETTERS",
+    "expected_priority": "LOW"
+  },
+  {
+    "id": "eval-3",
+    "subject": "50% Off Summer Sale Ends Tonight!",
+    "sender": "offers@shutterfly.com",
+    "body": "Don't miss our biggest sale of the season. Save big on photo books today.",
+    "expected_category": "PROMOTIONS",
+    "expected_priority": "LOW"
+  },
+  {
+    "id": "eval-4",
+    "subject": "New comment on your video: Great tutorial!",
+    "sender": "noreply@youtube.com",
+    "body": "@dev_guru commented on your video 'CrewAI Gmail Automation Setup'.",
+    "expected_category": "YOUTUBE",
+    "expected_priority": "HIGH"
+  },
+  {
+    "id": "eval-5",
+    "subject": "Your Receipt for Order #88123",
+    "sender": "receipts@amazon.com",
+    "body": "Thank you for your purchase. Total charged: $45.99. Download your tax invoice.",
+    "expected_category": "RECEIPTS_INVOICES",
+    "expected_priority": "LOW"
+  },
+  {
+    "id": "eval-6",
+    "subject": "Can we schedule a quick call tomorrow regarding contract terms?",
+    "sender": "sarah.client@partnerfirm.com",
+    "body": "Hi Tony, wanted to follow up on the proposal sent yesterday. Are you available for a 15 min call tomorrow at 2 PM?",
+    "expected_category": "PERSONAL",
+    "expected_priority": "HIGH"
+  },
+  {
+    "id": "eval-7",
+    "subject": "Sponsorship Opportunity for Python Conference",
+    "sender": "organizer@pycon.org",
+    "body": "We would love to invite you as a keynote sponsor for PyCon 2026. Let us know if you're interested.",
+    "expected_category": "SPONSORSHIPS",
+    "expected_priority": "MEDIUM"
+  },
+  {
+    "id": "eval-8",
+    "subject": "Recruitment Opportunity: Lead AI Engineer",
+    "sender": "recruiter@techjobs.io",
+    "body": "I came across your GitHub profile and was impressed by your CrewAI work. We have an open role.",
+    "expected_category": "RECRUITMENT",
+    "expected_priority": "MEDIUM"
+  },
+  {
+    "id": "eval-9",
+    "subject": "Exclusive Webinar: Mastering Agentic AI",
+    "sender": "marketing@aiacademy.com",
+    "body": "Join our free webinar next Thursday to learn how to build production agents.",
+    "expected_category": "PROMOTIONS",
+    "expected_priority": "LOW"
+  },
+  {
+    "id": "eval-10",
+    "subject": "Invitation: Quarterly Engineering Review",
+    "sender": "events@company.com",
+    "body": "You are invited to the Q3 engineering review sync next Wednesday at 10 AM.",
+    "expected_category": "EVENT_INVITATIONS",
+    "expected_priority": "MEDIUM"
+  },
+  {
+    "id": "eval-11",
+    "subject": "[GitHub] Build succeeded for commit a8f912",
+    "sender": "notifications@github.com",
+    "body": "Your workflow 'CI Pipeline' completed successfully for branch main.",
+    "expected_category": "GITHUB",
+    "expected_priority": "LOW"
+  },
+  {
+    "id": "eval-12",
+    "subject": "Quick question about the project documentation",
+    "sender": "alex.dev@gmail.com",
+    "body": "Hey Tony, I had a quick question about setting up the local environment.",
+    "expected_category": "PERSONAL",
+    "expected_priority": "MEDIUM"
+  },
+  {
+    "id": "eval-13",
+    "subject": "Invoice #INV-2026-09 Paid",
+    "sender": "billing@stripe.com",
+    "body": "Your payment of $120.00 for Cloud Services was successfully processed.",
+    "expected_category": "RECEIPTS_INVOICES",
+    "expected_priority": "LOW"
+  },
+  {
+    "id": "eval-14",
+    "subject": "Flash Sale - 24 Hours Only!",
+    "sender": "sales@gearshop.com",
+    "body": "Unbeatable prices on developer accessories. Shop now before stock runs out.",
+    "expected_category": "PROMOTIONS",
+    "expected_priority": "LOW"
+  },
+  {
+    "id": "eval-15",
+    "subject": "New subscriber notification: 50 new subscribers today",
+    "sender": "noreply@youtube.com",
+    "body": "Your YouTube channel gained 50 new subscribers today!",
+    "expected_category": "YOUTUBE",
+    "expected_priority": "HIGH"
+  }
+]

@@ -29,14 +29,15 @@ class SlackNotificationTool(BaseTool):
     def __init__(self):
         super().__init__()
         self._webhook_url = os.environ.get("SLACK_WEBHOOK_URL")
-        if not self._webhook_url:
-            raise ValueError("SLACK_WEBHOOK_URL must be set in the environment.")
 
     def _run(self, subject: str, sender: str, category: str, 
              priority: str, summary: str, action_needed: Optional[str] = None,
              headline: Optional[str] = None, intro: Optional[str] = None,
              action_header: Optional[str] = None) -> str:
-        """Send a notification to Slack."""
+        """Send a notification to Slack if webhook URL is configured."""
+        if not self._webhook_url:
+            print("LOG: Slack webhook URL is not configured. Skipping Slack notification.")
+            return "Slack webhook URL not configured. Skipped Slack notification."
         
         # Format the message
         blocks = [

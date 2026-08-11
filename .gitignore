@@ -1,6 +1,8 @@
-# Environment variables
+# Environment variables (CRITICAL: Do NOT commit secrets)
 .env
 .env.*
+!.env_example
+!.env.example
 
 # Python
 __pycache__/
@@ -30,17 +32,16 @@ venv/
 env/
 ENV/
 
-# IDE
+# IDE & OS
 .idea/
 .vscode/
 *.swp
 *.swo
-
-# Project specific
-output
-*.log
-
-# OS specific
 .DS_Store
 Thumbs.db
 
+# Project specific runtime outputs and logs
+output/
+logs/
+data/
+*.log

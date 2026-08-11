@@ -1,189 +1,143 @@
-# Gmail Automation with CrewAI 📧✨
+# 📧 CrewAI Gmail Automation & Executive Inbox Assistant
 
-[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCApiD66gf36M9hZanbjgNaw?style=social)](https://www.youtube.com/@tonykipkemboi)
-[![GitHub followers](https://img.shields.io/github/followers/tonykipkemboi?style=social)](https://github.com/tonykipkemboi)
-[![Twitter Follow](https://img.shields.io/twitter/follow/tonykipkemboi?style=social)](https://twitter.com/tonykipkemboi)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/tonykipkemboi/)
+An intelligent, safety-first email management assistant designed for freelancers, creators, and professionals drowning in email. Powered by **CrewAI** and **Google Gemini**, this project categorizes incoming communications, prioritizes urgent matters, generates context-aware draft replies, flags unsubscribe candidates, and safely cleans up low-value clutter with built-in human-in-the-loop guardrails.
 
-Gmail Automation with CrewAI is an intelligent email management system that uses AI agents to categorize, organize, respond to, and clean up your Gmail inbox automatically.
+---
 
-![Gmail Automation](./assets/gmail-automation.jpg)
-
-## ✨ Features
-
-![Stars](https://img.shields.io/github/stars/tonykipkemboi/crewai-gmail-automation?style=social)
-![Last Commit](https://img.shields.io/github/last-commit/tonykipkemboi/crewai-gmail-automation) 
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
-
-- **📋 Email Categorization**: Automatically categorizes emails into specific types (newsletters, promotions, personal, etc.)
-- **🔔 Priority Assignment**: Assigns priority levels (HIGH, MEDIUM, LOW) based on content and sender with strict classification rules
-- **🏷️ Smart Organization**: Applies Gmail labels and stars based on categories and priorities
-- **💬 Automated Responses**: Generates draft responses for important emails that need replies
-- **📱 Slack Notifications**: Sends creative notifications for high-priority emails
-- **🧹 Intelligent Cleanup**: Safely deletes low-priority emails based on age and category
-- **🎬 YouTube Content Protection**: Special handling for YouTube-related emails
-- **🗑️ Trash Management**: Automatically empties trash to free up storage space
-- **🧵 Thread Awareness**: Recognizes and properly handles email threads
-
-
-## 🚀 Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/tonykipkemboi/crewai-gmail-automation.git
-cd crewai-gmail-automation
-
-# Create and activate a virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install dependencies
-crewai install
-```
-
-## ⚙️ Configuration
-
-1. Create a `.env` file in the root directory with the following variables:
+## 🏗️ Architecture
 
 ```
-# Choose your LLM provider
-# OpenAI (Recommended)
-MODEL=openai/gpt-4o-mini
-OPENAI_API_KEY=your_openai_api_key
-
-# Or Gemini
-# MODEL=gemini/gemini-2.0-flash
-# GEMINI_API_KEY=your_gemini_api_key
-
-# Or Ollama  (Note: May have compatibility issues with tool calling)
-# Download the model from https://ollama.com/library
-# MODEL=ollama/llama3-groq-tool-use # use ones that have tool calling capabilities
-
-# Gmail credentials
-EMAIL_ADDRESS=your_email@gmail.com
-APP_PASSWORD=your_app_password
-
-# Optional: Slack notifications
-SLACK_WEBHOOK_URL=your_slack_webhook_url
+[1. IMAP Inbox Fetch (@before_kickoff)]
+       │ (Fetch unread emails & calculate age_days)
+       ▼
+[output/fetched_emails.json]
+       │
+       ├─────────────────────────────────────────────────────────────────────────┐
+       ▼                                                                         ▼
+[2. Categorization & Priority Agent]                                 [VIP Sender Learning]
+   (Categorizes: NEWSLETTERS, PROMOTIONS, PERSONAL, GITHUB,          (Bumps repeat senders
+    YOUTUBE, RECEIPTS_INVOICES, etc.)                                 from MEDIUM → HIGH)
+       │
+       ▼
+[output/categorization_report.json]
+       │
+       ├───────────────────────────────┬───────────────────────────────┬───────────────────────────────┐
+       ▼                               ▼                               ▼                               ▼
+[3. Organization Agent]      [4. Response Generator Agent]   [5. Notification Agent]     [6. Cleanup Agent]
+(Applies Gmail labels        (Generates drafts with style    (Sends urgent alerts        (Archives/deletes low-prio
+ & star markers)              matching & Calendar slots)      to Slack)                   clutter & expunges trash)
+       │                               │                               │                               │
+       └───────────────────────────────┴───────────────┬───────────────┴───────────────────────────────┘
+                                                       ▼
+                                            [7. Human Approval Guardrail]
+                                            (REQUIRE_APPROVAL & DRY_RUN check)
+                                                       │
+                                                       ▼
+                                            [8. Run Digest & Observability]
+                                            (Logs to decisions.jsonl & sends summary)
 ```
 
-<details>
-<summary><b>🔑 How to create a Gmail App Password</b></summary>
+---
 
-1. Go to your Google Account settings at [myaccount.google.com](https://myaccount.google.com/)
-2. Select **Security** from the left navigation panel
-3. Under "Signing in to Google," find and select **2-Step Verification** (enable it if not already enabled)
-4. Scroll to the bottom and find **App passwords**
-5. Select **Mail** from the "Select app" dropdown
-6. Select **Other (Custom name)** from the "Select device" dropdown
-7. Enter `Gmail CrewAI` as the name
-8. Click **Generate**
-9. Copy the 16-character password that appears (spaces will be removed automatically)
-10. Paste this password in your `.env` file as the `APP_PASSWORD` value
-11. Click **Done**
+## ✨ Features & Enhancements
 
-**Note**: App passwords can only be created if you have 2-Step Verification enabled on your Google account.
-</details>
+- 📋 **Intelligent Categorization**: Classifies emails into `NEWSLETTERS`, `PROMOTIONS`, `PERSONAL`, `GITHUB`, `YOUTUBE`, `RECEIPTS_INVOICES`, `SPONSORSHIPS`, `RECRUITMENT`, and `EVENT_INVITATIONS`.
+- 🔔 **Strict Priority Levels**: Assigns `HIGH`, `MEDIUM`, or `LOW` priority based on content urgency and sender context.
+- ⭐ **Gmail Organization**: Automatically stars and applies labels (`URGENT`, `ACTION_NEEDED`, category labels) via IMAP.
+- ✍️ **Personalized Response Drafts**: Crafts context-aware reply drafts matching your writing style without modifying your actual Inbox.
+- 📅 **Calendar-Aware Scheduling Assist**: Checks Google Calendar availability to suggest free slots in meeting replies.
+- 👑 **VIP Sender Learning**: Recognizes frequent contacts and automatically upgrades their priority level.
+- 📩 **Unsubscribe Assistant**: Identifies heavy promotional senders with `List-Unsubscribe` headers and compiles candidate suggestions.
+- 🛡️ **Human-in-the-Loop Safety**: All destructive operations (delete, archive, trash clear) default to `DRY_RUN=true` and require explicit CLI approval (`REQUIRE_APPROVAL=true`).
+- 📊 **Evaluation Harness**: Benchmark classification accuracy against synthetic test datasets.
+- 📜 **Decision Logging**: Appends all agent decisions to `logs/decisions.jsonl` with CLI table viewing tool (`scripts/view_log.py`).
 
-<details>
-<summary><b>🔗 How to create a Slack Webhook URL</b></summary>
+---
 
-1. Go to [api.slack.com/apps](https://api.slack.com/apps)
-2. Click **Create New App**
-3. Select **From scratch**
-4. Enter `Gmail Notifications` as the app name
-5. Select your workspace and click **Create App**
-6. In the left sidebar, find and click on **Incoming Webhooks**
-7. Toggle the switch to **Activate Incoming Webhooks**
-8. Click **Add New Webhook to Workspace**
-9. Select the channel where you want to receive notifications
-10. Click **Allow**
-11. Find the **Webhook URL** section and copy the URL that begins with `https://hooks.slack.com/services/`
-12. Paste this URL in your `.env` file as the `SLACK_WEBHOOK_URL` value
+## 🛡️ Safety & Design Decisions
 
-**Customizing your Slack app (optional):**
-1. Go to **Basic Information** in the left sidebar
-2. Scroll down to **Display Information**
-3. Add an app icon and description
-4. Click **Save Changes**
+1. **Dry-Run Default (`DRY_RUN=true`)**: Protects your real inbox by default. All deletion, archiving, and trash emptying tools run in simulated dry-run mode until you explicitly set `DRY_RUN=false` in `.env`.
+2. **Human-in-the-Loop Approval (`REQUIRE_APPROVAL=true`)**: Before executing inbox-mutating operations, the CLI pauses and prompts for confirmation.
+3. **Suggestion-Only Unsubscribe**: To prevent accidental loss of important newsletters or subscriptions, unsubscribe candidates are collected into digest reports for manual action rather than auto-executing.
+4. **IMAP Security**: Uses direct SSL IMAP connections with standard Gmail App Passwords. Your credentials remain stored locally on your machine in `.env` and are never shared.
 
-**Note**: You need admin permissions or the ability to install apps in your Slack workspace.
-</details>
+---
 
-## 📧 How It Works
+## 🔑 How to Get API Keys (100% Free Option Available)
 
-This application uses the IMAP (Internet Message Access Protocol) to securely connect to your Gmail account and manage your emails. Here's how it works:
+### Option A: Free Google Gemini API Key (Recommended)
+1. Go to [Google AI Studio (aistudio.google.com)](https://aistudio.google.com/app/apikey).
+2. Sign in with your Google account.
+3. Click **Create API Key**.
+4. Copy the generated key and set it in your `.env`:
+   ```env
+   MODEL=gemini/gemini-2.0-flash
+   GEMINI_API_KEY=AIzaSy...
+   ```
 
-<details>
-<summary><b>🔄 IMAP Connection Process</b></summary>
+### Option B: Gmail App Password
+1. Go to your Google Account settings: [myaccount.google.com](https://myaccount.google.com/).
+2. Select **Security** from the left panel.
+3. Under "Signing in to Google", enable **2-Step Verification** if not already enabled.
+4. Search for or select **App passwords**.
+5. Select **Mail** as the app and **Other (Custom name)** as the device (name it `Gmail CrewAI`).
+6. Click **Generate** and copy the 16-character password into `.env`:
+   ```env
+   EMAIL_ADDRESS=your_email@gmail.com
+   APP_PASSWORD=xxxx xxxx xxxx xxxx
+   ```
 
-1. **Secure Connection**: The application establishes a secure SSL connection to Gmail's IMAP server (`imap.gmail.com`).
+---
 
-2. **Authentication**: It authenticates using your email address and app password (not your regular Google password).
+## 🚀 Quick Start
 
-3. **Mailbox Access**: Once authenticated, it can access your inbox and other mailboxes to:
-   - Read unread emails
-   - Apply labels
-   - Move emails to trash
-   - Save draft responses
+### 1. Installation
+```powershell
+# Clone repository & enter project folder
+cd mail_automation
 
-4. **Safe Disconnection**: After each operation, the connection is properly closed to maintain security.
-
-IMAP allows the application to work with your emails while they remain on Google's servers, unlike POP3 which would download them to your device. This means you can still access all emails through the regular Gmail interface.
-
-**Security Note**: Your credentials are only stored locally in your `.env` file and are never shared with any external services.
-</details>
-
-## 🔍 Usage
-
-Run the application with:
-
-```bash
-crewai run
+# Create virtual environment & install dependencies
+.venv\Scripts\python.exe -m pip install -e .
 ```
 
-You'll be prompted to enter the number of emails to process (default is 5).
+### 2. Configure Environment
+Copy `.env_example` to `.env` and enter your keys:
+```powershell
+Copy-Item .env_example .env
+```
 
-The application will:
-1. 📥 Fetch your unread emails
-2. 🔎 Categorize them by type and priority
-3. ⭐ Apply appropriate labels and stars
-4. ✏️ Generate draft responses for important emails
-5. 🔔 Send Slack notifications for high-priority items
-6. 🗑️ Clean up low-priority emails based on age
-7. 🧹 Empty the trash to free up storage space
+### 3. Run Application
+```powershell
+.venv\Scripts\python.exe -m gmail_crew_ai.main
+```
 
+---
 
-## 🌟 Special Features
+## 📊 Evaluation & Utilities
 
-- **📅 Smart Deletion Rules**: 
-  - Promotions older than 2 days are automatically deleted
-  - Newsletters older than 7 days (unless HIGH priority) are deleted
-  - Shutterfly emails are always deleted regardless of age
-  - Receipts and important documents are archived instead of deleted
+### Run Categorization Accuracy Benchmark
+Test classification rules against 15 synthetic test fixtures:
+```powershell
+.venv\Scripts\python.exe eval/run_eval.py
+```
 
-- **🎬 YouTube Protection**: All YouTube-related emails are preserved and marked as READ_ONLY (you'll respond directly on YouTube)
+### View Decision Logs Table
+View recent agent classification & action logs in a terminal table:
+```powershell
+.venv\Scripts\python.exe scripts/view_log.py -n 10
+```
 
-- **✍️ Smart Response Generation**: Responses are tailored to the email context and include proper formatting
+---
 
-- **💡 Creative Slack Notifications**: Fun, attention-grabbing notifications for important emails
+## 🆕 What's New / Enhancements Over Original
 
-- **🧵 Thread Handling**: Properly tracks and manages email threads to maintain conversation context
-
-## 👥 Contributing
-
-Contributions are welcome! Please feel free to submit a [Pull Request](https://github.com/tonykipkemboi/crewai-gmail-automation/pulls).
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📚 References
-
-- [CrewAI](https://github.com/crewAIInc/crewAI/)
-- [IMAP Protocol for Gmail](https://support.google.com/mail/answer/7126229)
-- [Slack API](https://api.slack.com/messaging/webhooks)
-- [Ollama](https://ollama.com/library)
-- [Gemini](https://ai.google.com/gemini-api)
-- [OpenAI](https://openai.com/api/)
-
+- Added **Configurable LLM Support** (`gemini/gemini-2.0-flash` default).
+- Added **Missing `GmailArchiveTool`** for tax & receipt archiving.
+- Added **Dry-Run & Human Approval Guardrails**.
+- Added **Evaluation Harness** (`eval/fixtures.json` & `eval/run_eval.py`).
+- Added **Decision Logger & Viewer** (`logs/decisions.jsonl` & `scripts/view_log.py`).
+- Added **VIP Sender Recognition & Override**.
+- Added **Unsubscribe Candidate Detection**.
+- Added **Google Calendar Availability Assist**.
+- Added **Writing Style Analyzer**.
+- Added **Per-Run Digest Summary Reports**.
