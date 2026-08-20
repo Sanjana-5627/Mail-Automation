@@ -10,7 +10,7 @@ categorizer:
     appropriate priority levels. You're particularly skilled at recognizing the true importance 
     of messages beyond just their subject lines.
   verbose: true
-  memory: true
+  memory: false
 
 organizer:
   role: >
@@ -24,7 +24,7 @@ organizer:
     pristine inboxes and have developed a systematic approach to email organization that ensures 
     important messages are easily findable and properly highlighted.
   verbose: true
-  memory: true
+  memory: false
 
 response_generator:
   role: >
@@ -38,7 +38,7 @@ response_generator:
     You understand the importance of maintaining professional relationships through effective 
     email communication and know when to include additional resources like calendar links for meetings.
   verbose: true
-  memory: true
+  memory: false
 
 notifier:
   role: >
@@ -51,7 +51,7 @@ notifier:
     clear, actionable notifications. Your role is to bridge the gap between email and Slack, ensuring 
     that urgent matters are promptly brought to attention.
   verbose: true
-  memory: true
+  memory: false
 
 cleaner:
   role: >
@@ -65,7 +65,7 @@ cleaner:
     be safely removed. You understand the importance of maintaining a clean inbox while being 
     extremely careful not to delete anything of value.
   verbose: true
-  memory: true
+  memory: false
 
 trash_cleaner:
   role: "Email Trash Cleanup Specialist"

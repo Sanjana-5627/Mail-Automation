@@ -1,6 +1,8 @@
 categorization_task:
   description: >
-    First, read the fetched emails from the file at 'output/fetched_emails.json' using the `FileReadTool`.
+    Analyze the fetched emails provided below:
+
+    {emails_data}
     
     For each email, analyze the content and categorize as follows:
 
@@ -55,7 +57,7 @@ categorization_task:
 
 organization_task:
   description: >
-    First, read the categorization report from 'output/categorization_report.json' using the `FileReadTool`.
+    Analyze the categorized emails provided in the task context.
     
     For each email, organize it using Gmail's priority features with the 'organize_email' tool.
 
@@ -207,11 +209,9 @@ cleanup_task:
     - TRASH STATUS: Information about whether the trash was emptied successfully and how many messages were permanently removed
     Also include information about whether the trash was emptied successfully.
 
-    IMPORTANT: When using the 'delete_email' tool, ONLY provide the email_id and reason 
-    as a simple JSON object. For example:
-    
-      "email_id": "123", 
-      "reason": "Low priority promotional email"
+    IMPORTANT:
+    1. If NO emails meet the criteria for deletion, DO NOT call 'delete_email'. Simply generate your final cleanup report directly.
+    2. When using the 'delete_email' tool for an email that should be deleted, provide 'email_id' (string) and 'reason' (string) as input.
     
   expected_output: >
     A comprehensive deletion report with three sections:

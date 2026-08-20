@@ -50,8 +50,8 @@ def run():
                 if email_limit <= 0:
                     print("Number must be positive. Using default of 5.")
                     email_limit = 5
-        except ValueError:
-            print("Invalid input. Using default of 5 emails.")
+        except (ValueError, EOFError):
+            print("Using default limit of 5 emails.")
             email_limit = 5
         
         print(f"Processing {email_limit} emails...")

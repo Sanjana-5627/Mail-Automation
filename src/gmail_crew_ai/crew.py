@@ -8,7 +8,7 @@ from datetime import date, datetime
 
 from gmail_crew_ai.tools.gmail_tools import (
     GetUnreadEmailsTool, SaveDraftTool, GmailOrganizeTool, 
-    GmailDeleteTool, GmailArchiveTool, EmptyTrashTool
+    GmailDeleteTool, GmailArchiveTool, EmptyTrashTool, UTF8FileReadTool
 )
 from gmail_crew_ai.tools.slack_tool import SlackNotificationTool
 from gmail_crew_ai.tools.calendar_tool import CalendarAvailabilityTool
@@ -60,10 +60,11 @@ class GmailCrewAi():
         with open('output/fetched_emails.json', 'w', encoding='utf-8') as f:
             json.dump(emails, f, indent=2, ensure_ascii=False)
         
+        inputs["emails_data"] = json.dumps(emails, indent=2, ensure_ascii=False)
         print(f"Fetched and saved {len(emails)} emails to output/fetched_emails.json")
         return inputs
     
-    model_name = os.getenv("MODEL", "gemini/gemini-2.0-flash")
+    model_name = os.getenv("MODEL", "gemini/gemini-3.5-flash-lite")
     api_key = os.getenv("GEMINI_API_KEY") or os.getenv("OPENAI_API_KEY") or "placeholder_key"
     
     llm = LLM(
@@ -76,7 +77,7 @@ class GmailCrewAi():
         """The email categorizer agent."""
         return Agent(
             config=self.agents_config['categorizer'],
-            tools=[FileReadTool()],
+            tools=[],
             llm=self.llm,
         )
 
@@ -85,7 +86,7 @@ class GmailCrewAi():
         """The email organization agent."""
         return Agent(
             config=self.agents_config['organizer'],
-            tools=[GmailOrganizeTool(), FileReadTool()],
+            tools=[],
             llm=self.llm,
         )
         
@@ -94,7 +95,7 @@ class GmailCrewAi():
         """The email response generator agent."""
         return Agent(
             config=self.agents_config['response_generator'],
-            tools=[SaveDraftTool(), CalendarAvailabilityTool()],
+            tools=[],
             llm=self.llm,
         )
     
@@ -103,7 +104,7 @@ class GmailCrewAi():
         """The email notification agent."""
         return Agent(
             config=self.agents_config['notifier'],
-            tools=[SlackNotificationTool()],
+            tools=[],
             llm=self.llm,
         )
 
@@ -112,7 +113,7 @@ class GmailCrewAi():
         """The email cleanup agent."""
         return Agent(
             config=self.agents_config['cleaner'],
-            tools=[GmailDeleteTool(), GmailArchiveTool(), EmptyTrashTool()],
+            tools=[],
             llm=self.llm,
         )
 

@@ -47,6 +47,8 @@ def clean_email_body(email_body: str) -> str:
         print(f"Error parsing HTML: {e}")
         text = email_body  # Fallback to raw body if parsing fails
 
+    # Remove zero-width spaces, hidden BOMs, and non-printable control characters
+    text = re.sub(r'[\ufeff\u200b\u200c\u200d\u034f\u180e\u202a-\u202e\u2060-\u206f\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]', '', text)
     # Remove excessive whitespace and newlines
     text = re.sub(r'\s+', ' ', text).strip()
     return text
@@ -380,6 +382,8 @@ class SaveDraftTool(BaseTool):
             return False, None
 
     def _run(self, subject: str, body: str, recipient: str, thread_info: Optional[Dict[str, Any]] = None) -> str:
+        if is_dry_run():
+            return f"[DRY-RUN] Would save email draft with subject '{subject}' to recipient '{recipient}'."
         try:
             mail, email_address = self._connect()
             
@@ -491,8 +495,10 @@ class GmailOrganizeTool(GmailToolBase):
     def _run(self, email_id: str, category: str, priority: str, should_star: bool = False, labels: List[str] = None) -> str:
         """Organize an email with the specified parameters."""
         if labels is None:
-            # Provide a default empty list to avoid validation errors
             labels = []
+            
+        if is_dry_run():
+            return f"[DRY-RUN] Would organize email {email_id} with category {category}, priority {priority}, star={should_star}, labels={labels}"
         
         print(f"Organizing email {email_id} with category {category}, priority {priority}, star={should_star}, labels={labels}")
         
@@ -649,3 +655,14 @@ class EmptyTrashTool(GmailToolBase):
             return f"Error emptying trash: {str(e)}"
         finally:
             self._disconnect(mail)
+
+class UTF8FileReadTool(BaseTool):
+    name: str = "Read a file's content"
+    description: str = "A tool that can be used to read a file's content with UTF-8 encoding."
+
+    def _run(self, file_path: str = "output/fetched_emails.json") -> str:
+        try:
+            with open(file_path, "r", encoding="utf-8", errors="replace") as f:
+                return f.read()
+        except Exception as e:
+            return f"Error reading file {file_path}: {e}"
